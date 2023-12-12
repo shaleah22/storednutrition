@@ -16,16 +16,15 @@
             margin-bottom: 20px;
         }
 
+        #question img {
+            max-width: 80%;
+            height: auto;
+        }
+
+        
         #answer {
             font-size: 20px;
             margin-bottom: 20px;
-        }
-
-        #questionImage {
-            max-width: 90%;
-            height: auto;
-            margin-top: 20px;
-            display: none; /* Start with the image not displayed */
         }
 
         #timer {
@@ -55,8 +54,6 @@
 
 <div id="question"></div>
 <input type="text" id="answer" placeholder="Your answer" oninput="checkAnswer()" autofocus>
-<!-- Image will be displayed below the input box -->
-<img id="questionImage" src="" alt="" style="display: none;">
 <div id="timer">Time left: <span id="time">40</span> seconds</div>
 <div id="result"></div>
 <button id="levelButton" class="level-button" onclick="nextLevel()">Congratulations. Click here to move to level <span id="level">2</span></button>
@@ -67,36 +64,172 @@
 <script>
     let initialMathFacts = [
         { question: "1.1  where do you park and get the gondola for grosser mythen", answer: "brunni" },
-        { question: "1.2 parking for Rigi Panorama Trail ____strasse44", answer: "Chrabel" },
-        { question: "1.3 Saxer Lucke Appenzell Parking Small potentially frustrating buy ticket from english german machine 36 for straubahn gondola", answer: "frumsem", imageUrl: "https://www.journeyera.com/wp-content/uploads/2019/10/saxer-lucke-hike-hoher-kasten-05554.jpg" },
+        { question: "1.2 parking for Rigi Panorama Trail ____strasse44", answer: "Chrabel", imageUrl: "https://swissfamilyfun.com/wp-content/uploads/2015/11/rigi-panorama-felsenweg-feature.jpg" },
+
+        { question: "1.3 Saxer Lucke Appenzell Parking Small potentially frustrating buy ticket from english german machine 36 for straubahn gondola", answer: "frumsem", imageUrl: "https://images.alltrails.com/eyJidWNrZXQiOiJhc3NldHMuYWxsdHJhaWxzLmNvbSIsImtleSI6InVwbG9hZHMvcGhvdG8vaW1hZ2UvNDgyNDM4MTcvMDlkNzY0MTQ4Mzg3ZTZkMjZjY2I1OWJiYTczYjFmNDUuanBnIiwiZWRpdHMiOnsidG9Gb3JtYXQiOiJ3ZWJwIiwicmVzaXplIjp7IndpZHRoIjoyMDQ4LCJoZWlnaHQiOjIwNDgsImZpdCI6Imluc2lkZSJ9LCJyb3RhdGUiOm51bGwsImpwZWciOnsidHJlbGxpc1F1YW50aXNhdGlvbiI6dHJ1ZSwib3ZlcnNob290RGVyaW5naW5nIjp0cnVlLCJvcHRpbWlzZVNjYW5zIjp0cnVlLCJxdWFudGlzYXRpb25UYWJsZSI6M319fQ=="  },
+        
         { question: "1.4 schafler ridge in appenzell area find wasserauen and the ______bahn", answer: "ebenalp" },
+        { question: "What is the name of this location?", answer: "saxer", imageUrl: "https://www.journeyera.com/wp-content/uploads/2019/10/saxer-lucke-hike-hoher-kasten-05554.jpg" },
+
+        { question: "Mannlichen to Kleine Scheidegg, start in Mannlichen as it is a downhill hike that way. Get a cable car in Grindelwald 32 chf https://www.interlaken.ch/shop/toi_en/tickets/bergbahn/angebote/maennlichen", answer: "mannlichen", imageUrl: "https://s27363.pcdn.co/wp-content/uploads/2020/05/Mannlichen-Hike-Switzerland.jpg.optimal.jpg" },
+
+
+         { question: "___ kulm  tickets for cogway train https://www.rigi.ch/en/experience/rigi-mountain-railways/cogwheel-train-goldau-rigi-kulm", answer: "rigi", imageUrl: "https://swissfamilyfun.com/wp-content/uploads/2021/09/rigi-panorama-google-earth-labeled.jpg" },
+        
     ];
 
-    // ... Rest of your script ...
+    let newFacts = [
+        { question: "level 2   19 x 6", answer: 114 },
+        { question: "level 3   19 x 7", answer: 133 },
+        { question: "level 4   What is an orange feline?", answer: "cat" }
+       
+    ];
 
-    function displayQuestion() {
-        if (!completedCourse) {
-            const currentFact = initialMathFacts[currentQuestionIndex];
-            document.getElementById('question').innerText = currentFact.question;
-            document.getElementById('answer').value = '';
-            
-            const questionImage = document.getElementById('questionImage');
-            if (currentFact.question.includes("1.3")) {
-                questionImage.src = currentFact.imageUrl;
-                questionImage.alt = 'Question Image';
-                questionImage.style.display = 'block';
-            } else {
-                questionImage.style.display = 'none';
-            }
-        } else {
-            document.getElementById('question').innerText = '';
-            document.getElementById('answer').value = '';
-            document.getElementById('questionImage').style.display = 'none';
+    let mathFacts = JSON.parse(localStorage.getItem('mathFacts')) || initialMathFacts;
+    let currentQuestionIndex = JSON.parse(localStorage.getItem('currentQuestionIndex')) || 0;
+    let correctAnswers = 0;
+    let timerStarted = false;
+    let timer;
+    let level = parseInt(localStorage.getItem('level')) || 1;
+    let newFactIndex = parseInt(localStorage.getItem('newFactIndex')) || 0;
+    let completedCourse = false;
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
     }
 
-    // Rest of your existing script ...
 
+
+    function displayQuestion() {
+    const currentQuestion = mathFacts[currentQuestionIndex];
+    const questionElement = document.getElementById('question');
+    questionElement.innerHTML = ''; // Clear existing content
+
+    // Create a container for both text and image
+    const container = document.createElement('div');
+
+    // Create and append the text question
+    const textQuestion = document.createElement('p');
+    textQuestion.innerText = currentQuestion.question;
+    container.appendChild(textQuestion);
+
+    // Check if there's an image URL and append the image if it exists
+    if (currentQuestion.imageUrl) {
+        const img = document.createElement('img');
+        img.src = currentQuestion.imageUrl;
+        img.alt = "Question Image";
+        container.appendChild(img);
+    }
+
+    // Append the container to the question element
+    questionElement.appendChild(container);
+
+    document.getElementById('answer').value = '';
+}
+
+
+    
+
+    function startTimer() {
+        let timeLeft = 40;
+        document.getElementById('time').innerText = timeLeft;
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('time').innerText = timeLeft;
+
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                endDrill();
+            }
+        }, 1000);
+    }
+
+    function checkAnswer() {
+        const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+        const resultElement = document.getElementById('result');
+
+        if (!timerStarted) {
+            timerStarted = true;
+            document.getElementById('timer').style.display = 'block';
+            startTimer();
+        }
+
+        if (!completedCourse) {
+            if (userAnswer === mathFacts[currentQuestionIndex].answer.toString().toLowerCase() || userAnswer === "cat") {
+                correctAnswers++;
+                if (currentQuestionIndex < mathFacts.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion();
+                } else {
+                    endDrill();
+                }
+            } else {
+                resultElement.innerText = 'Try again.';
+                resultElement.style.display = 'block';
+            }
+        }
+    }
+
+    function endDrill() {
+        const resultElement = document.getElementById('result');
+        const score = (correctAnswers / mathFacts.length) * 100;
+        resultElement.innerText = `Your grade: ${score.toFixed(2)}%`;
+        resultElement.style.display = 'block';
+
+        // Only show the level-up button if the user scored 100%
+        if (score === 100 && level !== 4) {
+            document.getElementById('levelButton').style.display = 'block';
+            document.getElementById('level').innerText = level + 1;
+        }
+
+        if (score === 100 && level === 4) {
+            completedCourse = true;
+            document.getElementById('completionMessage').style.display = 'block';
+            document.getElementById('levelButton').style.display = 'none';
+        }
+
+        localStorage.setItem('level', level);
+        clearInterval(timer);
+    }
+
+    function nextLevel() {
+        level++;
+        currentQuestionIndex = 0;
+        correctAnswers = 0;
+        timerStarted = false;
+        clearInterval(timer);
+        document.getElementById('time').innerText = '40';
+
+        if (newFactIndex < newFacts.length) {
+            mathFacts.push(newFacts[newFactIndex]);
+            newFactIndex++;
+        } else {
+            newFactIndex = 0;
+            mathFacts.push(newFacts[newFactIndex]);
+            newFactIndex++;
+        }
+
+        localStorage.setItem('mathFacts', JSON.stringify(mathFacts));
+        localStorage.setItem('newFactIndex', newFactIndex);
+        localStorage.setItem('level', level);
+
+        shuffleArray(mathFacts);
+        displayQuestion();
+        document.getElementById('level').innerText = level + 1;
+        document.getElementById('levelButton').style.display = 'none';
+    }
+
+    // Add event listener to the answer input for the Enter key
+    document.getElementById('answer').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter' && document.getElementById('levelButton').style.display !== 'none') {
+            nextLevel();
+        }
+    });
+
+    shuffleArray(mathFacts);
     displayQuestion();
 </script>
 
