@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
         body { font-family: Arial, sans-serif; }
         #levelDisplay { position: absolute; right: 20px; top: 20px; }
         #questionContainer { margin-top: 60px; }
-        #questionImage { max-width: 50%; }
+        #questionImage { max-width: 50%; height: auto;}
     </style>
 </head>
 <body>
@@ -22,14 +23,9 @@
     <div id="reelContainer" style="display: none;"></div>
     <div id="mapContainer"></div>
 
-    
-    
-
-
     <script>
         const questions = [
-
-            { question: "1 eggs, cheese, bacon PASSO SELLO",
+        { question: "1 eggs, cheese, bacon PASSO SELLO",
               answer: "1",
               imageUrl: "https://live.staticflickr.com/65535/53402944781_f70d0b3f03_w.jpg",
               externalLink: '<a href="https://wanderyourway.com/passo-gardena-one-of-the-most-beautiful-drives-in-italy/" target="_blank">Link Text Here</a>',
@@ -144,7 +140,7 @@
             { question: "13  Flumserberg Alpine Flora Trail near Appenzell. Tannenboden gondola lift 10 chf roundtrip. This trail is accessed from the Tannenboden-Maschgenkamm gondola. Southeast Switzerland.   " , answer: "1", externalLink: '<a href="https://swissfamilyfun.com/flumserberg-flower-trail/" target="_blank">Swiss Family Fun Info</a>', imageUrl: "https://swissfamilyfun.com/wp-content/uploads/2006/09/flumserberg-flower-trail-cloudy.jpg" , map: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d173752.34149682036!2d9.13817267599118!3d47.121016567861446!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479b2b361c10e319%3A0x4af1123a0d96917c!2sParking%20Flumserberg%20Tannenboden!5e0!3m2!1sen!2sus!4v1703063921914!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'},
             { question: '14  ___ kulm (hill)  tickets for cogway train about 50 chf round trip with no discount goldau to rigi klum can buy online <a href="https://www.rigi.ch/en/experience/rigi-mountain-railways/cogwheel-train-goldau-rigi-kulm" target="_blank">https://www.rigi.ch/en/experience/rigi-mountain-railways/cogwheel-train-goldau-rigi-kulm</a>"', answer: "1", imageUrl: "https://swissfamilyfun.com/wp-content/uploads/2021/09/rigi-panorama-google-earth-labeled.jpg", instagramReel: '<iframe src="https://www.instagram.com/reel/CxOQck3tgfY/embed" width="400" height="480" frameborder="0" allowtransparency="true"></iframe>', map: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2719.042210416905!2d8.530575260308293!3d47.03940252069615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478557e2f2df2d23%3A0xed7633deb39d8efd!2sParkplatz%20Kr%C3%A4bel!5e0!3m2!1sen!2sus!4v1702983337018!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'},
             { question: "15 what is the answer to life, the universe, and everything?", answer: "1", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Douglas_adams_portrait_cropped.jpg" },
-            { question: "16  where do you park and get the gondola for grosser mythen? Parkplatz Brunni", answer: "1" , imageUrl: "https://flyingcdn-44f099d7.b-cdn.net/wp-content/uploads/2022/05/Kleiner-Mythen-hike-2-1024x682.jpg" },    
+            { question: "16  where do you park and get the gondola for grosser mythen? Parkplatz Brunni", answer: "1" , imageUrl: "https://flyingcdn-44f099d7.b-cdn.net/wp-content/uploads/2022/05/Kleiner-Mythen-hike-2-1024x682.jpg", map: '<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10875.554406616333!2d8.7032083!3d47.0424167!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47854d0099547755%3A0xd4804c39b3e2e198!2sParkplatz%20Brunni!5e0!3m2!1sen!2sus!4v1703068327599!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' },    
             { question: "17  parking for Rigi Panorama Trail ____strasse44", answer: "1", imageUrl: "https://www.homeschwiizhome.com/wp-content/uploads/2017/08/IMG_3778-1-1030x773.jpg" },
             { question: "18 Saxer Lucke Appenzell Parking Small potentially frustrating buy ticket from english german machine 36 for straubahn gondola", answer: "1", imageUrl: "https://theportuguesetraveler.com/wp-content/uploads/2022/01/the-saxer-lucke-at-sunset.jpg"  },
             { question: "19 schafler ridge in appenzell area find wasserauen and the ______bahn", answer: "1", imageUrl: "https://www.journeyera.com/wp-content/uploads/2020/05/interlaken-hiking-guide-hikes-near-interlaken-04228-1024x682.jpg" },
@@ -246,72 +242,40 @@
         
         
 
-
-           
-
-            // ... add more questions here
+            // ... (list of all questions) ...
         ];
 
-        let currentLevel = parseInt(localStorage.getItem('currentLevel')) || 1;
         let currentQuestionIndex = 0;
-        let levelQuestions = [];
-        let timer;
 
         function init() {
-            document.getElementById('levelDisplay').innerText = `Level: ${currentLevel}`;
-            levelQuestions = shuffleArray(questions.slice(currentLevel - 1, currentLevel + 9));
-            currentQuestionIndex = 0;
-            startTimer();
             loadNextQuestion();
-        }
-
-        function startTimer() {
-            clearTimeout(timer);
-            timer = setTimeout(function() {
-                alert("Time's up!");
-                location.reload(); // Reloads the current level
-            }, 30000); // 30 seconds for the entire level
+            setupAnswerInput();
         }
 
         function loadNextQuestion() {
-            if (currentQuestionIndex >= 10) {
-                clearTimeout(timer);
-                alert("Congratulations. You have mastered this level.");
-                currentLevel++;
-                localStorage.setItem('currentLevel', currentLevel);
-                init();
+            if (currentQuestionIndex >= questions.length) {
+                alert("Congratulations. You have reviewed all questions.");
                 return;
             }
-
-            displayQuestion(levelQuestions[currentQuestionIndex]);
+            displayQuestion(questions[currentQuestionIndex]);
         }
-
-       
-
-
 
         function displayQuestion(question) {
             document.getElementById('questionText').innerHTML = question.question;
-
             const questionImage = document.getElementById('questionImage');
             if (question.imageUrl) {
                 questionImage.src = question.imageUrl;
-                questionImage.style.display = 'block'; // Show the image if the URL is provided
+                questionImage.style.display = 'block';
             } else {
-                questionImage.style.display = 'none'; // Hide the image element if the URL is not provided
+                questionImage.style.display = 'none';
             }
-
-            const answerInput = document.getElementById('answerInput');
-            answerInput.value = '';
-            answerInput.oninput = () => checkAnswer(question.answer, answerInput.value);
 
             if (question.externalLink) {
                 document.getElementById('externalLinkContainer').innerHTML = question.externalLink;
             } else {
-                document.getElementById('externalLinkContainer').innerHTML = ''; // Or set to some default value
+                document.getElementById('externalLinkContainer').innerHTML = '';
             }
 
-            //Handling Instagram Reel
             const reelContainer = document.getElementById('reelContainer'); 
             if (question.instagramReel) {
                 reelContainer.innerHTML = question.instagramReel;
@@ -319,11 +283,7 @@
             } else {
                 reelContainer.style.display = 'none';
             }
-            
 
-        
-
-            // Handling the Map
             const mapContainer = document.getElementById('mapContainer');
             if (question.map) {
                 mapContainer.innerHTML = question.map;
@@ -333,26 +293,17 @@
             }
         }
 
-
-
-        
-        function checkAnswer(correctAnswer, userAnswer) {
-            if (userAnswer === correctAnswer) {
-                currentQuestionIndex++;
-                loadNextQuestion();
-            }
+        function setupAnswerInput() {
+            const answerInput = document.getElementById('answerInput');
+            answerInput.onkeypress = function(event) {
+                if (event.key === 'Enter') {
+                    currentQuestionIndex++;
+                    loadNextQuestion();
+                }
+            };
         }
-        
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-        
+
         init();
-
     </script>
 </body>
 </html>
