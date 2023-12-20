@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,11 +27,17 @@
             display: block;
             margin: 0 auto;
         }
-        #answerInput {
+        #nextQuestionButton {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
             font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
         }
         @media (max-width: 768px) {
             #levelDisplay {
@@ -42,27 +49,25 @@
                 margin-top: 30px;
             }
         }
-        /* Other styles remain unchanged */
     </style>
 </head>
 <body>
     <div id="levelDisplay"></div>
-    <input type="text" id="answerInput" autofocus>
+    <button id="nextQuestionButton">Next Question</button>
     <div id="externalLinkContainer"></div>
     <div id="questionContainer">
         <img id="questionImage" src="" alt="Question Image">
         <p id="questionText"></p>
-  
     </div>
     <div id="reelContainer" style="display: none;"></div>
     <div id="mapContainer"></div>
 
-
-
-
     <script>
         const questions = [
-        { question: "1 eggs, cheese, bacon PASSO SELLO",
+
+        
+
+            { question: "1 eggs, cheese, bacon PASSO SELLO",
               answer: "1",
               imageUrl: "https://live.staticflickr.com/65535/53402944781_f70d0b3f03_w.jpg",
               externalLink: '<a href="https://wanderyourway.com/passo-gardena-one-of-the-most-beautiful-drives-in-italy/" target="_blank">Link Text Here</a>',
@@ -279,6 +284,8 @@
         
         
 
+
+           
             // ... (list of all questions) ...
         ];
 
@@ -286,7 +293,7 @@
 
         function init() {
             loadNextQuestion();
-            setupAnswerInput();
+            setupNextQuestionButton();
         }
 
         function loadNextQuestion() {
@@ -330,13 +337,11 @@
             }
         }
 
-        function setupAnswerInput() {
-            const answerInput = document.getElementById('answerInput');
-            answerInput.onkeypress = function(event) {
-                if (event.key === 'Enter') {
-                    currentQuestionIndex++;
-                    loadNextQuestion();
-                }
+        function setupNextQuestionButton() {
+            const nextQuestionButton = document.getElementById('nextQuestionButton');
+            nextQuestionButton.onclick = function() {
+                currentQuestionIndex++;
+                loadNextQuestion();
             };
         }
 
