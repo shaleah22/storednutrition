@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,10 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Drill</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        #levelDisplay { position: absolute; right: 20px; top: 20px; }
-        #questionContainer { margin-top: 60px; }
-        #questionImage { max-width: 50%; height: auto;}
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #levelDisplay { 
+            position: absolute; 
+            right: 20px; 
+            top: 20px; 
+        }
+        #questionContainer { 
+            margin-top: 60px; 
+            padding: 10px;
+        }
+        #questionImage { 
+            max-width: 100%; 
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        #answerInput {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        @media (max-width: 768px) {
+            #levelDisplay {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            #questionContainer {
+                margin-top: 30px;
+            }
+        }
+        /* Other styles remain unchanged */
     </style>
 </head>
 <body>
@@ -22,6 +55,9 @@
     </div>
     <div id="reelContainer" style="display: none;"></div>
     <div id="mapContainer"></div>
+
+
+
 
     <script>
         const questions = [
