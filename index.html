@@ -1,72 +1,285 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>questions with button</title>
+    <title>Interactive Drill</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        #levelDisplay { 
-            position: absolute; 
-            right: 20px; 
-            top: 20px; 
-        }
-        #questionContainer { 
-            margin-top: 60px; 
-            padding: 10px;
-        }
-        #questionImage { 
-            max-width: 100%; 
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-        #nextQuestionButton {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            #levelDisplay {
-                position: static;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            #questionContainer {
-                margin-top: 30px;
-            }
-        }
+        body { font-family: Arial, sans-serif; }
+        #levelDisplay { position: absolute; right: 20px; top: 20px; }
+        #questionContainer { margin-top: 60px; }
+        #questionImage { max-width: 50%; height: auto;}
     </style>
 </head>
 <body>
     <div id="levelDisplay"></div>
-    <button id="nextQuestionButton">Next Question</button>
     <div id="externalLinkContainer"></div>
     <div id="questionContainer">
-        <p id="questionText"></p>
         <img id="questionImage" src="" alt="Question Image">
-        
+        <p id="questionText"></p>
+        <input type="text" id="answerInput" autofocus>
     </div>
     <div id="reelContainer" style="display: none;"></div>
     <div id="mapContainer"></div>
 
+    
+    
+
+
     <script>
         const questions = [
 
+            
+
+
+            /*
+            { question: "2.a ",
+              answer: "1",
+              imageUrl: "",
+              externalLink: '<a href="link" target="_blank">link name</a>',
+              instagramReel: '<iframe src="LINK/embed" width="400" height="480" frameborder="0" allowtransparency="true"></iframe>',
+              map: 
+
+            },
+
+            */
+                //one step equation with fraction coefficients
+              { question: "What is the value of h", answer: "18", imageUrl: "https://slideplayer.com/16610066/96/images/slide_4.jpg" },
+
+
+              //MA.6.AR.3.1 Ratios
+             { question: "A garden has 4 tulips and 3 daisies. What is the ratio of daises to all flowers in the garden? Enter your answer as a fraction.", answer: "3/7", imageUrl: "" },
+
+
+             //MA.6.AR.3.2 Unit Rate
+              { question: "Tom drove 300 miles in 6 hours. What is the unit rate in miles per hour? ____ miles per hour", answer: "50", imageUrl: "" },
+
+              //MA.6.AR.3.3 Ratio Tables
+              { question: "____ cups", answer: "12", imageUrl: "https://live.staticflickr.com/65535/53413983999_c09387c719_z.jpg" },
+
+
+             
+
+
+
+
+              /* STANDARDS NOT INTRODUCED YET
+
+
+
+
+
+            //F, D, P Equivalents
+            { question: "Enter the fraction equivalent of 65%", answer: "13/20", imageUrl: "https://www.wikihow.com/images/thumb/6/63/Convert-a-Percentage-to-a-Fraction-Step-6.jpg/v4-460px-Convert-a-Percentage-to-a-Fraction-Step-6.jpg" },
+
+              //MA.6.AR.3.4 Percents 
+              { question: "Of the 24 employees working at Hannah’s restaurant, 6 are assistant chefs. What percentage of employees are assistant chefs? ___%", answer: "25", imageUrl: "" },
+
+
+            //MA.6.AR.3.5 TOO HARD FOR A SPEED DRILL
+
+
+
+            //MA.6.GR.1.1 COORDINATE PLANE REFLECTIONS
+              { question: "What point is located at (-1, -2)?  Point ____", answer: "d", imageUrl: "https://live.staticflickr.com/65535/53413824503_2f7038789e_z.jpg" },
+
+
+            //MA.6.GR.1.2 DISTANCE ON A COORDINATE PLANE
+              { question: "What is the distance between points K and M? _____ units", answer: "4", imageUrl: "https://live.staticflickr.com/65535/53413662201_8c020d3a35_n.jpg" },
+
+
+
+            
+              //MA.6.GR.1.3 AREA AND PERIMETER ON COORDINATE PLANE
+              { question: "___square units", answer: "25", imageUrl: "https://live.staticflickr.com/65535/53413675351_268608c944_w.jpg" },
+
+            //MA.6.GR.2.1 AREA OF TRIANGLE
+              { question: "____ square centimeters", answer: "9", imageUrl: "https://live.staticflickr.com/65535/53414014494_2c8bd95f8f_z.jpg" },
+
+
+            //MA.6.GR.2.2 AREA OF COMPLEX SHAPES
+              { question: "Find the area of the parallelogram ____ square units", answer: "72", imageUrl: "https://cdn-academy.pressidium.com/academy/wp-content/uploads/2021/09/parallelogram-1.png" },
+
+
+
+
+
+
+            //MA.6.GR.2.3 Volume of a Rectangular Prism
+              { question: "Find the volume of this rectangular prism. ____ cubic centimeters", answer: "100", imageUrl: "https://o.quizlet.com/Ti4WkJkeD0Y2ap2ICgmkbg.png" },
+
+
+
+            // MA.6.GR.2.4 Surface Area of Square Pyramid
+              { question: "Find the surface area of the square pyramid _____ square feet", answer: "28", imageUrl: "https://o.quizlet.com/FFhk7w8pEQDkYJsLGjU5gQ.png" },
+
+
+            //MA.6.DP.1.1 STATISTICAL QUESTIONS
+              { question: "Type in letter choice", answer: "b", imageUrl: "https://live.staticflickr.com/65535/53413878328_aa914450d1_z.jpg" },
+
+            //Area of a Trapezoid
+             { question: "What is the area of a trapezoid with bases of 8 cm and 5 cm and a height of 4 cm? _______square centimeters", answer: "26", },
+           
+            //Percent Proportion
+            { question: "A number is 25% of 80. What is the number?", answer: "20", },
+
+
+            //MORE STANDARDS LEFT OFF ON PAGE 75 IN TEACHERS EDITION
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+
+              { question: "", answer: "", imageUrl: "" },
+                */
+              
+
+
+                // One Step Division Equation
+              { question: "What is the value of x", answer: "45", imageUrl: "https://i0.wp.com/www.mathswithmum.com/wp-content/uploads/2021/05/Solving-One-Step-Equations-8.gif?resize=600%2C450&ssl=1" },
+
+            { question: "(-7)(-9) = ", answer: "63", imageUrl: "" },
+            { question: "(4)(-9) = ", answer: "-36", imageUrl: "" },
+            { question: "-3 - (-9) = ", answer: "6", imageUrl: "" },
+            { question: "-4 - 5 = ", answer: "-9", imageUrl: "" },
+            { question: "7 - (-3) = ", answer: "10", imageUrl: "" },
+            { question: "-9 + (-4) = ", answer: "-13", imageUrl: "" },
+            { question: "(-6)(-8) = ", answer: "48", imageUrl: "" },
+            { question: "(-7)(-8) = ", answer: "56", imageUrl: "" },
+            { question: "(4)(-9) = ", answer: "-36", imageUrl: "" },
+
+
+            { question: "(12)(-9) = ", answer: "-108", imageUrl: "" },
+
+            { question: "(-12)(-8) = ", answer: "96", imageUrl: "" },
+
+            { question: "(12)(7) = ", answer: "84", imageUrl: "" },
+
+            { question: "(-6)(-12) = ", answer: "72", imageUrl: "" },
+
+            { question: "(-6)(-7) = ", answer: "42", imageUrl: "" },
+
+            { question: "(-7)(-9) = ", answer: "63", imageUrl: "" },
+
+            { question: "(-4)(-7) = ", answer: "28", imageUrl: "" },
+
+
+            { question: "(4)(-9) = ", answer: "-36", imageUrl: "" },
+
+
+            //Dividing Fractions Visual 3/4 divided by 1/12
+            { question: "", answer: "9", imageUrl: "https://live.staticflickr.com/65535/53411669802_e37e937ffe_z.jpg" },
+
+            
+                //Dividing Fractions Visual 3/5 divided by 1/10
+              { question: "", answer: "6", imageUrl: "https://live.staticflickr.com/65535/53411672162_bd56cc3ec7_w.jpg" },
+          
+
+          // Ordering Rational Numbers 
+            { question: "Type letter choice", answer: "c", imageUrl: "https://live.staticflickr.com/65535/53411695617_70578c4c5b_n.jpg" },
+
+            // Ordering and Comparing Integers
+            { question: "Which integer has the greater value? -3 or -5", answer: "-3", imageUrl: "https://d20khd7ddkh5ls.cloudfront.net/positives_and_negatives.jpg" },
+
+
+            // Opposites
+            { question: "A number and its opposite are equal distances away from 0 on a number line. <br> <br>   Type t for true or f for false.", answer: "t", imageUrl: "" },
+
+
+            // Absolute Value
+            { question: "The absolute value of -3 is ____ ", answer: "3", imageUrl: "https://www.katesmathlessons.com/uploads/1/6/1/0/1610286/published/absolute-value-definition-what-is-absolute-value-what-are-absolute-values-calculator-help-lesson-math-examples.png?1649955410" },
+
+
+            // Absolute Value Operations
+            { question: "Find the value of |-3| - |-2| = ____", answer: "1", imageUrl: "" },
+
+            // Multiplying Decimals
+            { question: "How many places would you move the decimal in your answer for <br>  1.2 x 0.03?", answer: "3", imageUrl: "" },
+
+
+            //Dividing Fracxtions
+            { question: "When do you keep, change, flip? <br> Type in +, -, x, or /", answer: "/", imageUrl: "https://images.squarespace-cdn.com/content/v1/54905286e4b050812345644c/1616006538446-KFTGCO0RLTBHQHWIBF2D/Snip20210317_3.png" },
+
+
+            //MA.6.NSO.2.3 OPERATIONS WORD PROBLEMS. TOO MUCH FOR A SPEED DRILL
+
+
+            //GCF and LCM
+            { question: "What is the greatest common factor (GCF) of 280 and 144??", answer: "8", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKMvNZfyWFzyWN4QAu6QDJ5fmtVIhYlHkLQbxDbO6SHNA--2UDvBhkITnG-_gx3wlcbmg&usqp=CAU" },
+
+            //GCF and LCM
+            { question: "What is the least common multiple of 8 and 12  ", answer: "24", imageUrl: "https://static.qumath.in/static/website/old-cdn-static/common-factor/lcm-of-8-and-12-by-listing-multiples-method.png" },
+
+            //Distributive Property and Factoring
+            { question: "Type in the missing number.  <br>     45 + 60 = ___(3 + 4)", answer: "15", imageUrl: "" },
+
+
+
+            //Exponents
+            { question: "Find the value of the expression", answer: "64", imageUrl: "https://study.com/cimages/multimages/16/base_and_exponent_1476386592073130735.jpg" },
+
+            
+            //Prime Factorization
+            { question: "What is the prime factorization of 30. <br>  Put numbers in order from least to greatest. <br>  No spaces and include x signs. Example: 2x2x3", answer: "1", imageUrl: "https://images.saymedia-content.com/.image/t_share/MTg0MjExNTc3ODk1OTIxNTM5/how-to-write-a-number-as-a-product-of-its-prime-factors.jpg" },
+
         
+
+
+
+            { question: "What is 15 - (-33)", answer: "48", imageUrl: "" },
+ 
+
+            { question: "Type in letter choice", answer: "b", imageUrl: "https://live.staticflickr.com/65535/53407654858_d816b9067f.jpg" },
+
+            { question: "People 10 and under can purchase meals from the children’s menu.    <br>  <br>     Write an inequality to represent the ages of persons who can purchase from the children's menu. <br>  <br> Type in <, >, <=, or >=       p ___ 10.  ", answer: "1", imageUrl: "https://live.staticflickr.com/65535/53407671353_3b77549c13_z.jpg" },
+
+            { question: "Evaluate 4m + 2 when m = -4", answer: "-14", imageUrl: "" },
+
+           
+
+            { question: "What is the value of c? <br> c + 14 = -20", answer: "-34", imageUrl: "" },
+
+            { question: "A number, n, when added to 20 equals negative 10. <br> What is the value of n?", answer: "-30", imageUrl: "" },
+
+
+            { question: "What is the value?", answer: "1/64", imageUrl: "https://study.com/cimages/multimages/16/fraction_with_exponent7962331627880981711.jpg" },
+
+           
+
+          
+
+            { question: "If the ratio of cats to dogs in a pet store is 3:2 and there are 18 cats, how many dogs are there?", answer: "12 dogs", },
+            
+           
+
+          
+        
+        
+
+
+
+             { question: "Switzerland Map", answer: "1", imageUrl: "https://live.staticflickr.com/65535/53410109790_7668ae9e1a_z.jpg" },
 
             { question: "1 eggs, cheese, bacon PASSO SELLO",
               answer: "1",
@@ -287,40 +500,70 @@
 
 
            
-            // ... (list of all questions) ...
+
+            // ... add more questions here
         ];
 
+        let currentLevel = parseInt(localStorage.getItem('currentLevel')) || 1;
         let currentQuestionIndex = 0;
+        let levelQuestions = [];
+        let timer;
 
         function init() {
+            document.getElementById('levelDisplay').innerText = `Level: ${currentLevel}`;
+            levelQuestions = shuffleArray(questions.slice(currentLevel - 1, currentLevel + 9));
+            currentQuestionIndex = 0;
+            startTimer();
             loadNextQuestion();
-            setupNextQuestionButton();
+        }
+
+        function startTimer() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                alert("Time's up!");
+                location.reload(); // Reloads the current level
+            }, 30000); // 30 seconds for the entire level
         }
 
         function loadNextQuestion() {
-            if (currentQuestionIndex >= questions.length) {
-                alert("Congratulations. You have reviewed all questions.");
+            if (currentQuestionIndex >= 10) {
+                clearTimeout(timer);
+                alert("Congratulations. You have mastered this level.");
+                currentLevel++;
+                localStorage.setItem('currentLevel', currentLevel);
+                init();
                 return;
             }
-            displayQuestion(questions[currentQuestionIndex]);
+
+            displayQuestion(levelQuestions[currentQuestionIndex]);
         }
+
+       
+
+
 
         function displayQuestion(question) {
             document.getElementById('questionText').innerHTML = question.question;
+
             const questionImage = document.getElementById('questionImage');
             if (question.imageUrl) {
                 questionImage.src = question.imageUrl;
-                questionImage.style.display = 'block';
+                questionImage.style.display = 'block'; // Show the image if the URL is provided
             } else {
-                questionImage.style.display = 'none';
+                questionImage.style.display = 'none'; // Hide the image element if the URL is not provided
             }
+
+            const answerInput = document.getElementById('answerInput');
+            answerInput.value = '';
+            answerInput.oninput = () => checkAnswer(question.answer, answerInput.value);
 
             if (question.externalLink) {
                 document.getElementById('externalLinkContainer').innerHTML = question.externalLink;
             } else {
-                document.getElementById('externalLinkContainer').innerHTML = '';
+                document.getElementById('externalLinkContainer').innerHTML = ''; // Or set to some default value
             }
 
+            //Handling Instagram Reel
             const reelContainer = document.getElementById('reelContainer'); 
             if (question.instagramReel) {
                 reelContainer.innerHTML = question.instagramReel;
@@ -328,7 +571,11 @@
             } else {
                 reelContainer.style.display = 'none';
             }
+            
 
+        
+
+            // Handling the Map
             const mapContainer = document.getElementById('mapContainer');
             if (question.map) {
                 mapContainer.innerHTML = question.map;
@@ -338,15 +585,26 @@
             }
         }
 
-        function setupNextQuestionButton() {
-            const nextQuestionButton = document.getElementById('nextQuestionButton');
-            nextQuestionButton.onclick = function() {
+
+
+        
+        function checkAnswer(correctAnswer, userAnswer) {
+            if (userAnswer === correctAnswer) {
                 currentQuestionIndex++;
                 loadNextQuestion();
-            };
+            }
         }
-
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
         init();
+
     </script>
 </body>
 </html>
